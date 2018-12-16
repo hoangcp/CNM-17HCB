@@ -1,0 +1,43 @@
+﻿Phân tích yêu cầu
+- Các chức năng cần có:
+   - App Request:
+	+ Nhận request gọi xe: ho ten, dia chi, sdt, ghi chu
+   - App Location:	
+	+ Hiển thị danh sách request 
+	+ Click vào từng request hiện thị trên bản đồ
+	+ di chuyển vị trí
+   - App Management:
+	+ Hiển thị danh sách request
+	+ Xem đường đi ngắn nhất
+	+ Xem thông tin tài xế	
+   - App Driver
+	+ Cập nhật vị trí hiện tại
+	+ Đăng nhập
+	+ Đổi trạng thái online/offline
+	+ Phản hồi Nhận/ Không nhận
+	+ Cập nhật tình trạng chuyến xe: Đang di chuyển, kết thúc
+
+
+Phân tích thiết kế db:
+- Request:
+	+ Ho ten
+	+ SĐT
+	+ Dia chi
+	+ Ghi chu
+	+ Thoi gian gui
+	+ Tinh trang: Chờ tiếp nhận, Đã tiếp nhận, Đang tìm xe, Xe đang đến, Không có xe, Hủy, Đã lên xe
+	+ Dia chi sau khi cap nhat
+- Car:
+	+ Ho ten chu xe
+	+ Bien so xe
+	+ Ảnh đại diện
+	+ Hiệu xe
+	+ Số ghế ngồi
+	+ Tình trạng: Online/Offline/Busy
+
+- Account:
+	+ Họ tên
+	+ Tên đăng nhập
+	+ Mật khẩu
+	+ Lần đăng nhập cuối
+	+ Ảnh đại diện
