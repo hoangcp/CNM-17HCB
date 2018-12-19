@@ -10,6 +10,6 @@ exports.add = function(req) {
 
 exports.login = reqLogin => {
     var md5_pwd = md5(reqLogin.Password);
-    var sql = `select * from Account where Username = '${reqLogin.Username}' and Password = '${md5_pwd}'`;
+    var sql = `EXEC Account_Login @Username = '${reqLogin.Username}', @Password = '${md5_pwd}'`;
     return db.load(sql);
 }

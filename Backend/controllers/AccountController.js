@@ -7,7 +7,7 @@ var router = express.Router();
 router.post('/', (req, res) => {
     accountModel.add(req.body)
         .then(value => {
-            console.log(value);
+            //console.log(value);
             res.statusCode = 201;
             res.json(req.body);
         })
@@ -22,22 +22,24 @@ router.post('/login', (req, res) => {
     accountModel.login(req.body)
         .then(rows => {
             if (rows.recordset.length > 0) {
-                var userEntity = rows.recordset[0];
+                var account_info = rows.recordset[0];
 
                 var payload = {
-                    user: userEntity,
-                    info: 'more info'
+                    account: account_info                    
                 }
+
+                var acToken_expires = 600; //second
                 var acToken = jwt.sign(payload, '17@HCB', {
-                    expiresIn: 600 // seconds
+                    expiresIn: acToken_expires
                 });
                 
                 var rfToken = '';
 
                 res.json({
                     auth: true,
-                    user: userEntity,
+                    account: account_info,
                     access_token: acToken,
+                    access_token_expires: acToken_expires,
                     refresh_token: rfToken
                 })
             } else {

@@ -24,8 +24,7 @@ var verifyAccessToken = (req, res, next) => {
                     msg: 'INVALID TOKEN',
                     error: err
                 });
-            } else {
-                // console.log(payload);
+            } else {                
                 req.token_payload = payload;
                 next();
             }
