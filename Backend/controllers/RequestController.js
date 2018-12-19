@@ -9,8 +9,9 @@ router.post('/', (req, res) => {
     }
     requestModel.get()
         .then(rows => {
-            if (rows.length > 0) {
-                res.json(rows[0]);
+            //console.log(rows);
+            if (rows.recordset.length > 0) {
+                res.json(rows.recordset[0]);
             } else {
                 res.statusCode = 204;
                 res.end('NO DATA');

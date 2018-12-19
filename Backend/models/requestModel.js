@@ -1,7 +1,7 @@
-var db = require('../fn/mysql-db');
+var db = require('../fn/mssql');
 
 exports.get = function() {
-	var sql = `select * from Request order by id desc`;
+	var sql = `select * from Account order by accountid desc`;
 	return db.load(sql);
 }
 
