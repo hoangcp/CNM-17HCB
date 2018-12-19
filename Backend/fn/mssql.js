@@ -6,7 +6,7 @@ exports.load = function(sql) {
             user: 'sa',
             password: '123456',
             server: 'localhost', 
-            database: 'AILATRIEUPHU'
+            database: 'TAXI'
         };
         //var connection = new sql.Connection(config);
 
@@ -32,7 +32,7 @@ exports.write = function(sql) {
             user: 'sa',
             password: '123456',
             server: 'localhost', 
-            database: 'AILATRIEUPHU'
+            database: 'TAXI'
         };
         //var connection = new sql.Connection(config);
 
