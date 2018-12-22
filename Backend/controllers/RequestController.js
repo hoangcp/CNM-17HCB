@@ -33,7 +33,7 @@ router.post('/getlist', (req, res) => {
     requestModel.get()
         .then(rows => {
             //console.log(rows);
-            if (rows.recordset.length > 0) {
+            if (rows.recordsets.length > 0) {
                 res.json(rows.recordset);
             } else {
                 res.statusCode = 204;
