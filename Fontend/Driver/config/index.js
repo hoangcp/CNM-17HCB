@@ -30,35 +30,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/auth': {
-        // @TODO: You need to replace this with your own backend API.
-        // Demo OAuth2 server https://github.com/bshaffer/oauth2-demo-php.
-        // Username: demouser  Password: demopass
-        //target: 'http://brentertainment.com/oauth2/lockdin/token',
-        target: 'http://localhost:8081',
-        changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          '^/auth': ''
-        },
-        router: {
-        }
-      },
-      '/api': {
-        // target: 'http://brentertainment.com/oauth2',  // <-- Api server.
-        target: 'http://localhost:8081/experience',
-        changeOrigin: true,                           // <-- For virtual hosted sites.
-        ws: true,                                     // <-- Proxy websockets.
-        pathRewrite: {
-        // Rewrite path localhost:8080/api to http://brentertainment.com/oauth2/lockdin.
-          '^/api': ''
-        },
-        router: {
-          // when request.headers.host == 'dev.localhost:3000',
-          // override target 'http://www.example.org' to 'http://localhost:8000'
-          // 'dev.localhost:3000': 'http://localhost:8000'
-        }
-      }
+     
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
