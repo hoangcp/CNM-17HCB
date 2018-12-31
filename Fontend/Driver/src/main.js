@@ -9,6 +9,7 @@ import App from './app'
 import Loading from './components/loading'
 import Appbar from './components/app-bar'
 import Appfooter from './components/app-footer'
+import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.config.productionTip = false
 
@@ -21,6 +22,12 @@ sync(store, router)
 // Http and Auth plugins
 Vue.use(http)
 Vue.use(auth)
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyCEheMxtUig64jFuGOWEjAPhsCFKDpy-OA',
+    libraries: 'places' // necessary for places input
+  }
+})
 
 // Vuetify
 Vue.use(Vuetify, {
