@@ -25,40 +25,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import VueSocketIO from 'vue-socket.io'
-import * as constants from '@/constants'
-
-Vue.use(new VueSocketIO({
-  debug: true,
-  connection: constants.API_URL,
-  vuex: {
-    state: {
-      connect: false,
-      message: null
-    },
-    mutations: {
-      SOCKET_CONNECT: (state, status) => {
-        state.connect = true
-      },
-      SOCKET_USER_MESSAGE: (state, message) => {
-        state.message = message
-      }
-    },
-    actions: {
-      otherAction: (context, type) => {
-        return true
-      },
-      socket_userMessage: (context, message) => {
-        context.dispatch('newMessage', message)
-        context.commit('NEW_MESSAGE_RECEIVED', message)
-        if (message.is_important) {
-          context.dispatch('alertImportantMessage', message)
-        }
-      }
-    }
-  }
-}))
 
 export default {
   data () {
@@ -82,11 +48,14 @@ export default {
       console.log(place)
       this.currentPlace = place
     },
-    addMarker () {
-      if (this.currentPlace) {
-        const marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
+    addMarker (location) {
+      if (this.currentPlace || location) {
+        var marker = location
+        if (marker == null) {
+          marker = {
+            lat: this.currentPlace.geometry.location.lat(),
+            lng: this.currentPlace.geometry.location.lng()
+          }
         }
         this.markers.push({ position: marker })
         this.places.push(this.currentPlace)
@@ -100,13 +69,21 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
+        this.addMarker(this.center)
       })
     },
     sendMessage: function (val) {
+      this.created()
       this.$socket.emit('new_message', { message: 'khong biet noi gi' })
     },
     changeUser: function (val) {
       this.$socket.emit('change_username', { username: 'giautq' })
+    },
+    created () {
+      this.$socket.message = (data) => {
+        console.log(data)
+        this.response = data
+      }
     }
   }
 }

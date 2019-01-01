@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import Vue from 'vue'
 // import store from '../../store'
 import googlemap from './components/googlemap'
+import Vue from 'vue'
 import VueSocketIO from 'vue-socket.io'
 import * as constants from '@/constants'
 
@@ -21,14 +21,24 @@ Vue.use(new VueSocketIO({
       message: null
     },
     mutations: {
-      SOCKET_CONNECT: (state, status) => {
-        state.connect = true
+      SOCKET_CONNECT (state) {
+        state.connected = true
       },
-      SOCKET_USER_MESSAGE: (state, message) => {
+      SOCKET_DISCONNECT (state) {
+        state.connected = false
+      },
+      SOCKET_MESSAGE (state, message) {
         console.log(message)
         state.message = message
+      },
+      SOCKET_HELLO_WORLD (state, message) {
+        state.message = message
+      },
+      SOCKET_ERROR (state, message) {
+        state.error = message.error
       }
-    },
+    }
+    /* ,
     actions: {
       otherAction: (context, type) => {
         return true
@@ -40,7 +50,7 @@ Vue.use(new VueSocketIO({
           context.dispatch('alertImportantMessage', message)
         }
       }
-    }
+    } */
   }
 }))
 
