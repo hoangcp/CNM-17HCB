@@ -10,6 +10,10 @@ import Loading from './components/loading'
 import Appbar from './components/app-bar'
 import Appfooter from './components/app-footer'
 import * as VueGoogleMaps from 'vue2-google-maps'
+/* import BootstrapVue from 'bootstrap-vue'
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css' */
 
 Vue.config.productionTip = false
 
@@ -28,6 +32,7 @@ Vue.use(VueGoogleMaps, {
     libraries: 'places' // necessary for places input
   }
 })
+// Vue.use(BootstrapVue)
 
 // Vuetify
 Vue.use(Vuetify, {
