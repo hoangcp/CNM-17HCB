@@ -12,6 +12,7 @@ router.post('/', (req, res) => {
                 PhoneNumber: req.body.PhoneNumber,
                 Address: req.body.Address,
                 Note: req.body.Note,
+                Username: req.body.Username,
                 formattedAddress: GeoAddress.formattedAddress,
                 Latitude: GeoAddress.latitude,
                 Longitude: GeoAddress.longitude,

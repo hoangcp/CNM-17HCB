@@ -2,11 +2,11 @@
   <div>        
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-3">
+        <div class="col-sm-2.5 col-md-2.5">
           <Location @SelectedReqID="GetID"/>
         </div>
-        <div class="col-sm-9 col-md-9">
-          <Map :CusInfo="ReqInfo"/>
+        <div class="col-sm-10 col-md-10">
+          <Map :CusInfo="ReqInfo" ref="form"/>
         </div>
       </div>
       
@@ -44,12 +44,13 @@ export default {
                 )
         .then(res => {          
           self.ReqInfo = res.data[0];
+          self.$refs.form.addMarkerFromParent(self.ReqInfo);
         })
         .catch(err => {
           console.log(err.response);
-          alert(err.response.data.msg);
-          localStorage.clear();
-          self.$router.push('/login');
+          //alert(err.response.data.msg);
+          //localStorage.clear();
+          //self.$router.push('/login');
         })      
     },
   }

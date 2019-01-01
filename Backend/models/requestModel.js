@@ -16,8 +16,8 @@ exports.getID = function(par) {
 }
 
 exports.insert = function(par) {
-	var sql = `INSERT INTO Request(Fullname, PhoneNumber, Address, Note, CreateDate, Status, Latitude, Longitude, formattedAddress) 
-				VALUES(N'${par.Fullname}','${par.PhoneNumber}', N'${par.Address}', N'${par.Note}', GETDATE(), 0, '${par.Latitude}', '${par.Longitude}', N'${par.formattedAddress}')`;
+	var sql = `INSERT INTO Request(Fullname, PhoneNumber, Address, Note, CreateBy, CreateDate, Status, Latitude, Longitude, formattedAddress) 
+				VALUES(N'${par.Fullname}','${par.PhoneNumber}', N'${par.Address}', N'${par.Note}', N'${par.Username}', GETDATE(), 0, '${par.Latitude}', '${par.Longitude}', N'${par.formattedAddress}')`;
 	return db.write(sql);
 }
 

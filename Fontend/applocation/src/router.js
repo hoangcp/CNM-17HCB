@@ -21,7 +21,7 @@ var router = new Router({
       }
     },
     /*{
-      path: '/categories/:catId',
+      path: '/request/:ID',
       name: 'products',
       component: Products
     },

@@ -51,7 +51,8 @@ export default {
                     Fullname: self.Fullname,
                     PhoneNumber: self.PhoneNumber,
                     Address: self.Address,
-                    Note: self.Note
+                    Note: self.Note,
+                    Username: localStorage.username
                   },
                   {
                     headers: {'access-token': localStorage.access_token }

@@ -86,7 +86,7 @@ export default {
               //console.log(r);
               self.lists.unshift(res.data[r]);
               self.current = res.data[r].CreateDate3;
-              console.log(self.current);
+              //console.log(self.current);
             }                       
           })
           .catch(err => {

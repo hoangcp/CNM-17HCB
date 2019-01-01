@@ -5,8 +5,8 @@
       <div class="form-group">
         <legend>VỊ TRÍ ĐÓN KHÁCH</legend>
       </div>         
-      <b-input-group prepend="">
-        <b-form-input placeholder="Địa chỉ đón khách" :value="CusInfo.Address"></b-form-input>
+      <b-input-group prepend="" hidden>
+        <b-form-input placeholder="Địa chỉ đón khách" :value="CusInfo.Address" v-model="Address" disabled="disabled"></b-form-input>
         <b-input-group-append>
           <b-btn variant="btn btn-primary" @click="addMarker">Định vị</b-btn>         
         </b-input-group-append>
@@ -24,7 +24,7 @@
       :center="center"
       :zoom="16"
       map-type-id="terrain"
-      style="width:100%;  height: 500px;"
+      style="width:100%;  height: 700px;"
     >
       <gmap-marker
         :key="index"
@@ -54,7 +54,8 @@ export default {
       center: {},
       markers: [],
       places: [],
-      currentPlace: null    
+      currentPlace: null,
+      Address: this.$props.CusInfo.Address,   
     };
   },  
 
@@ -74,12 +75,27 @@ export default {
 
     addMarker() {     
       var self = this;
+      //console.log(self.Address);
       self.markers = [];
 
       if (self.$props.CusInfo) {        
         self.center = {
           lat: parseFloat(self.$props.CusInfo.Latitude),
           lng: parseFloat(self.$props.CusInfo.Longitude)
+        };
+        self.markers.push({ position: self.center });     
+      }
+    },
+
+    addMarkerFromParent(CusInfo) {     
+      var self = this;
+      //console.log(self.Address);
+      self.markers = [];
+
+      if (CusInfo) {        
+        self.center = {
+          lat: parseFloat(CusInfo.Latitude),
+          lng: parseFloat(CusInfo.Longitude)
         };
         self.markers.push({ position: self.center });     
       }
@@ -136,11 +152,11 @@ export default {
     },  
   },
 
-  /*watch: {
-    Cure: function (val, oldVal) {
+  watch: {
+    Address: function (val, oldVal) {
       console.log('new: %s, old: %s', val, oldVal)
     }
-  },*/
+  },
 
 };
 </script>
