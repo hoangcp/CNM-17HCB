@@ -28,7 +28,7 @@ router.post('/login', (req, res) => {
                     account: account_info                    
                 }
 
-                var acToken_expires = 600; //second
+                var acToken_expires = 14400; //second --> 4h
                 var acToken = jwt.sign(payload, '17@HCB', {
                     expiresIn: acToken_expires
                 });

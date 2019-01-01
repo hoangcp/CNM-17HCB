@@ -35,63 +35,17 @@ export default {
       PhoneNumber:"",
       Address: "",
       Note: "",
-      AccessToken: "INVALID"
+      //AccessToken: localStorage.access_token
     };
   },
 
   mounted() {        
-    var self = this;
-    if(self.AccessToken == "INVALID")
-    {
-      var Username = "hoangcp";
-      var Password = "123";
-      axios.post('http://localhost:6300/account/login', 
-                  {
-                    Username: Username,
-                    Password: Password
-                  }
-                )
-          .then(res => {                       
-            if(res.data.auth == true)
-            {
-              self.AccessToken = res.data.access_token;                              
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          })
-    }
+    
   },
 
-  methods: {
-    GetAccessToken() {      
-      var self = this;
-      var Username = "hoangcp";
-      var Password = "123";
-      axios.post('http://localhost:6300/account/login', 
-                  {
-                    Username: Username,
-                    Password: Password
-                  }
-                )
-          .then(res => {                       
-            if(res.data.auth == true)
-            {
-              self.AccessToken = res.data.access_token;                              
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          })
-    },
-
-
+  methods: {    
     SubmitInfo() {      
       var self = this;
-      console.log(self.AccessToken);
-      if(self.AccessToken == "INVALID")
-        self.GetAccessToken();
-
       axios.post('http://localhost:6300/request/', 
                   {
                     Fullname: self.Fullname,
@@ -100,7 +54,7 @@ export default {
                     Note: self.Note
                   },
                   {
-                    headers: {'access-token': self.AccessToken }
+                    headers: {'access-token': localStorage.access_token }
                   },
                 )
           .then(res => {   
@@ -111,8 +65,10 @@ export default {
             self.Note = "";
           })
           .catch(err => {
-            console.log(err);
-            self.AccessToken = "INVALID"
+            console.log(err.response);
+            alert(err.response.data.msg);
+            localStorage.clear();
+            self.$router.push('/');
           })
     },   
     

@@ -21,7 +21,7 @@ var verifyAccessToken = (req, res, next) => {
             if (err) {
                 res.statusCode = 403;
                 res.json({
-                    msg: 'INVALID TOKEN',
+                    msg: 'Hết phiên làm việc \r\nVui lòng đăng nhập lại',
                     error: err
                 });
             } else {                
@@ -32,7 +32,7 @@ var verifyAccessToken = (req, res, next) => {
     } else {
         res.statusCode = 403;
         res.json({
-            msg: 'NO TOKEN FOUND'
+            msg: 'Hết phiên làm việc \r\nVui lòng đăng nhập lại'
         });
     }
 }

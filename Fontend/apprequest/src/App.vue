@@ -1,18 +1,19 @@
 <template>
   <div id="app">    
-    <Request />
+    <!--<Request />-->
+    <router-view/>
   </div>
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
-import Request from './components/RequestCompo.vue'
+//import Request from './components/RequestCompo.vue'
 
 export default {
   name: 'app',
   components: {
     //HelloWorld,
-    Request
+    //Request
   }
 }
 </script>
