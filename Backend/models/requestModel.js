@@ -1,9 +1,10 @@
 var db = require('../fn/mssql');
 
-exports.get = function() {
+exports.getList = function(current) {
 	var sql = `SELECT [ID],[Fullname],[PhoneNumber],[Address],[Note], CreateDate,FORMAT([CreateDate], 'dd/MM/yyyy HH:mm:ss') CreateDate2,[Status],[Createby]
-						,[UpdateBy],[Updatedate],[Latitude],[Longitude],[formattedAddress]
-				FROM Request ORDER BY CreateDate DESC`;
+						,[UpdateBy],[Updatedate],[Latitude],[Longitude],[formattedAddress], CONVERT(varchar,[CreateDate],113) CreateDate3
+				FROM Request WHERE CreateDate > '${current}' ORDER BY CreateDate ASC`;
+	//console.log(sql);
 	return db.load(sql);
 }
 

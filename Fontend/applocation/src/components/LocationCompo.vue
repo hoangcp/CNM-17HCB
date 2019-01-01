@@ -54,52 +54,53 @@ export default {
           sortable: true
         }       
       },
-      AccessToken: "INVALID"
+      current: 0,      
     };
   },
 
   mounted() {        
-    var self = this;    
-    var Username = "hoangcp";
-    var Password = "123";
-    axios.post('http://localhost:6300/account/login', 
-                {
-                  Username: Username,
-                  Password: Password
-                }
-              )
-        .then(res => {                       
-          if(res.data.auth == true)
-          {
-            self.AccessToken = res.data.access_token;
-            self.$emit('AccessToken', self.AccessToken);
-            //console.log('data nè: ' +  self.AccessToken);   
-            axios.post('http://localhost:6300/request/getlist',{}, 
-                      {
-                        headers: {'access-token': self.AccessToken }
-                      }
-                     )
-                .then(res => {      
-                  self.lists = res.data;
-                })
-                .catch(err => {
-                  console.log(err);
-                })                             
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })        
+     this.getList();                         
   },
 
   methods: {    
     categoryClicked(c) {
       var self = this;
-      self.selectedId = c.ID;
-      // alert(JSON.stringify(c));
+      self.selectedId = c.ID;      
       self.$emit('SelectedReqID', c);
-    }
-    
+    },
+
+    getList(){
+      var self = this;           
+      axios.post('http://localhost:6300/request/getlist',
+                {
+                  "current": self.current
+                }, 
+                {
+                  headers: {'access-token': localStorage.access_token }
+                }
+               )
+          .then(res => {      
+            //console.log(res.data);
+            for(var r in res.data)
+            {
+              //console.log(r);
+              self.lists.unshift(res.data[r]);
+              self.current = res.data[r].CreateDate3;
+              console.log(self.current);
+            }                       
+          })
+          .catch(err => {
+            console.log(err.response);
+            /*alert(err.response.data.msg);
+            localStorage.clear();
+            self.$router.push('/login');*/
+          }).then(function() {
+              setTimeout(function () {
+                self.getList();
+              }, 3000);   
+          })    
+    },
+
   },
 };
 </script>

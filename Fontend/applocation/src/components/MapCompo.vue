@@ -46,8 +46,7 @@ export default {
   name: "GoogleMap",
   
   props: [
-    'CusInfo',
-    'AccessToken',
+    'CusInfo',    
   ],
 
   data() {
@@ -101,35 +100,39 @@ export default {
 
     updatePosition(location) {
       var self = this;
-      self.center = {
-          lat: location.latLng.lat(),
-          lng: location.latLng.lng(),
-      };
-      self.$props.CusInfo.Latitude = self.center.lat;
-      self.$props.CusInfo.Longitude = self.center.lng;
-      //console.log(self.$props.CusInfo);
+      if(parseInt(self.$props.CusInfo.ID) > 0)
+      {
+        self.center = {
+            lat: location.latLng.lat(),
+            lng: location.latLng.lng(),
+        };
+        self.$props.CusInfo.Latitude = self.center.lat;
+        self.$props.CusInfo.Longitude = self.center.lng;
+        //console.log(self.$props.CusInfo);
 
-      //update db
-      axios.post('http://localhost:6300/request/updatelatlng'
-                ,{
-                  latitude: self.$props.CusInfo.Latitude,
-                  longitude: self.$props.CusInfo.Longitude,
-                  updateby: "hoangcp",
-                  id: self.$props.CusInfo.ID
-                }
-                ,{
-                    headers: {'access-token': self.$props.AccessToken }
+        //update db
+        axios.post('http://localhost:6300/request/updatelatlng'
+                  ,{
+                    latitude: self.$props.CusInfo.Latitude,
+                    longitude: self.$props.CusInfo.Longitude,
+                    updateby: localStorage.username,
+                    id: self.$props.CusInfo.ID
                   }
-                 )
-            .then(res => {                   
-              console.log(res);
-              alert(res.data.msg);
-            })
-            .catch(err => {
-              console.log(err);
-            })         
-
-
+                  ,{
+                      headers: {'access-token': localStorage.access_token }
+                    }
+                   )
+              .then(res => {                   
+                console.log(res);
+                alert(res.data.msg);
+              })
+              .catch(err => {
+                console.log(err.response);
+                alert(err.response.data.msg);
+                localStorage.clear();
+                self.$router.push('/login');
+              })         
+        }
     },  
   },
 

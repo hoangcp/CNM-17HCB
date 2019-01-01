@@ -68,7 +68,7 @@ export default {
             console.log(err.response);
             alert(err.response.data.msg);
             localStorage.clear();
-            self.$router.push('/');
+            self.$router.push('/login');
           })
     },   
     

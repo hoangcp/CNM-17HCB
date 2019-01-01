@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import login from './components/Login.vue'
-import request from './components/RequestCompo.vue'
+import Index from './components/Index.vue'
 
 Vue.use(Router)
 
@@ -14,8 +14,8 @@ var router = new Router({
     },
     {
       path: '/',
-      name: 'request',
-      component: request,
+      name: 'Index',
+      component: Index,
       meta: {
         requiresAuth: true
       }

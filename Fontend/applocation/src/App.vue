@@ -1,32 +1,18 @@
 <template>
   <div id="app">        
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-3">
-          <Location @SelectedReqID="GetID" @AccessToken="SetAccessToken"/>
-        </div>
-        <div class="col-sm-9 col-md-9">
-          <Map :CusInfo="ReqInfo" :AccessToken="AccessToken"/>
-        </div>
-      </div>
-      
-    </div>    
+    <router-view/>  
   </div>
 </template>
 
 <script>
-import Location from './components/LocationCompo.vue'
-import Map from './components/MapCompo.vue'
-import axios from 'axios'
 
 export default {
   name: 'app',
   components: {
-    Location,
-    Map
+    
   },
 
-  data () {
+  /*data () {
     return {
       ReqInfo: {},
       AccessToken: ""
@@ -55,7 +41,7 @@ export default {
     SetAccessToken(req){
       this.AccessToken = req; 
     }
-  }
+  }*/
 
 }
 </script>

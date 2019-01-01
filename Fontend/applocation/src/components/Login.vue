@@ -65,7 +65,7 @@ export default {
             if(res.data.auth == true)
             {
               localStorage.access_token = res.data.access_token;                              
-              localStorage.username = res.data.username;
+              localStorage.username = res.data.account.Username;
               self.$router.push('/');
               return;
             }

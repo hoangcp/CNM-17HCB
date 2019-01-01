@@ -37,24 +37,36 @@ router.post('/', (req, res) => {
 })
 
 router.post('/getlist', (req, res) => {
-    var str = {
-        string: req.body.string
+    var current = "2018-12-01 00:00:00";
+    if (req.body.current) {
+        current = req.body.current;
     }
-    requestModel.get()
-        .then(rows => {
-            //console.log(rows);
-            if (rows.recordsets.length > 0) {
-                res.json(rows.recordset);
-            } else {
-                res.statusCode = 204;
-                res.end('NO DATA');
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            res.statusCode = 500;
-            res.end('View error log on server console');
-        })
+
+    var loop = 0;
+    var fn = () => {
+        requestModel.getList(current)
+            .then(rows => {                
+                if (rows.recordset.length > 0) {
+                    res.json(rows.recordset);
+                } else {
+                    loop++;      
+                    console.log(loop);              
+                    if (loop < 10) {
+                        setTimeout(fn, 3000);
+                    } else {
+                        res.statusCode = 204;
+                        res.end('no data');
+                    }
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.statusCode = 500;
+                res.end('View error log on server console');
+            })
+    }
+
+    fn();    
 })
 
 router.post('/getID', (req, res) => {
@@ -64,7 +76,7 @@ router.post('/getID', (req, res) => {
     requestModel.getID(par)
         .then(rows => {
             //console.log(rows);
-            if (rows.recordsets.length > 0) {
+            if (rows.recordset.length > 0) {
                 res.json(rows.recordset);
             } else {
                 res.statusCode = 204;
