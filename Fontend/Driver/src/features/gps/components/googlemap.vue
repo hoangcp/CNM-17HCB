@@ -1,30 +1,60 @@
-<template>
-  <div class="row">
-    <div class="col-xs-6 col-md-3">
-      <h2>Search and add a pin</h2>
-      <gmap-autocomplete @place_changed="setPlace"/>
-      <button @click="addMarker">Add</button>
-      <button @click="changeUser">Set user</button>
-      <button @click="sendMessage">sendMessage</button>
-    </div>
-    <div class="col-xs-6 col-md-3">
-      <gmap-map
-        :center="center"
-        :zoom="12"
-        style="width:100%;  height: 780px;">
-        <gmap-marker
-          v-for="(m, index) in markers"
-          :key="index"
-          :position="m.position"
-          :draggable= "true"
-          :clickable= "true"
-          @click="center=m.position"/>
-      </gmap-map>
-    </div>
-  </div>
+<template lang="pug">
+  v-container(fluid fill-height style="padding: 0;")
+    v-layout.my-account(column)
+      v-container(
+        fluid
+        fill-height
+        v-bind:grid-list-sm="$vuetify.breakpoint.smAndDown"
+        v-bind:grid-list-lg="$vuetify.breakpoint.mdAndUp"
+        style="position: relative;"
+      )
+        v-layout(v-show="showPage" row wrap)
+          v-flex(d-flex xs12)
+            v-layout(column)
+              v-flex(d-flex)
+                v-card(flat)
+                  v-card-title
+                    gmap-autocomplete(
+                      @place_changed="setPlace"
+                      aria-label="Address Line 2"
+                    )
+                    v-btn(flat @click.native="addMarker()") Add
+                    v-btn(flat @click.native="changeUser()") changeUser
+                    v-btn(flat @click.native="sendMessage()") sendMessage
+              v-flex(d-flex)
+                v-card
+                  v-card-text
+                    v-layout
+                      v-flex
+                        gmap-map(
+                          :center="center"
+                          :zoom="12"
+                          style="width:100%;  height: 780px;"
+                        )
+                          gmap-marker(
+                            v-for="(m, index) in markers"
+                            :key="index"
+                            :position="m.position"
+                            :draggable= "true"
+                            :clickable= "true"
+                            @click="openDialogFull('AddressEdit')"
+                          )
+
+        v-dialog(
+          v-model="dialogFullActive"
+          fullscreen
+          transition="dialog-bottom-transition"
+          :overlay=false
+          scrollable
+        )
+          component(:is="dialogFullComp" :active.sync="dialogFullActive")
 </template>
 
 <script>
+import AddressEdit from './viewinfo'
+import * as constants from '@/constants'
+const io = require('socket.io-client')
+const ioClient = io.connect(constants.API_URL)
 
 export default {
   data () {
@@ -34,18 +64,22 @@ export default {
       center: { lat: 10.730717, lng: 106.732022 },
       markers: [],
       places: [],
-      currentPlace: null
+      currentPlace: null,
+      dialogFullActive: false,
+      dialogFullComp: null,
+      showPage: false
     }
   },
 
   mounted () {
     this.geolocate()
+    this.showPage = true
   },
   created () {
-    this.$options.sockets.hello_world = (data) => {
-      console.log(data)
-      this.response = data
-    }
+    ioClient.on('EVENT_NAME', (msg) => {
+      this.openDialogFull('AddressEdit')
+      console.info(msg)
+    })
   },
   methods: {
     // receives a place object via the autocomplete component
@@ -77,12 +111,16 @@ export default {
         this.addMarker(this.center)
       })
     },
-    sendMessage: function (val) {
-      this.created()
+    sendMessage: function (message) {
       this.$socket.emit('new_message', { message: 'khong biet noi gi' })
     },
     changeUser: function (val) {
       this.$socket.emit('change_username', { username: 'giautq' })
+    },
+    openDialogFull (comp) {
+      if (comp === 'AddressEdit') this.dialogFullComp = AddressEdit
+
+      this.dialogFullActive = true
     }
   }
 }
