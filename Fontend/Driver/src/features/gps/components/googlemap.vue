@@ -41,7 +41,12 @@ export default {
   mounted () {
     this.geolocate()
   },
-
+  created () {
+    this.$options.sockets.hello_world = (data) => {
+      console.log(data)
+      this.response = data
+    }
+  },
   methods: {
     // receives a place object via the autocomplete component
     setPlace (place) {
@@ -78,12 +83,6 @@ export default {
     },
     changeUser: function (val) {
       this.$socket.emit('change_username', { username: 'giautq' })
-    },
-    created () {
-      this.$socket.message = (data) => {
-        console.log(data)
-        this.response = data
-      }
     }
   }
 }
