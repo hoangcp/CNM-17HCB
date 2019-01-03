@@ -14,12 +14,9 @@
               v-flex(d-flex)
                 v-card(flat)
                   v-card-title
-                    gmap-autocomplete(
-                      @place_changed="setPlace"
-                      aria-label="Address Line 2"
-                    )
-                    v-btn(flat @click.native="addMarker()") Add
-                    v-btn(flat @click.native="changeUser()") changeUser
+                    v-btn(flat @click.native="addMarker()") Xác định vị trí
+                    v-btn(flat @click.native="offline()" v-show="isOnline") Online
+                    v-btn(flat @click.native="online()" v-show="!isOnline") Offline
                     v-btn(flat @click.native="sendMessage()") sendMessage
               v-flex(d-flex)
                 v-card
@@ -28,7 +25,7 @@
                       v-flex
                         gmap-map(
                           :center="center"
-                          :zoom="12"
+                          :zoom="17"
                           style="width:100%;  height: 780px;"
                         )
                           gmap-marker(
@@ -53,10 +50,14 @@
 <script>
 import AddressEdit from './viewinfo'
 import * as constants from '@/constants'
+import Service from '../service'
+// import store from '@/store'
+
 const io = require('socket.io-client')
 const ioClient = io.connect(constants.API_URL)
 
 export default {
+  service: new Service(),
   data () {
     return {
       // default to Montreal to keep it simple
@@ -67,7 +68,8 @@ export default {
       currentPlace: null,
       dialogFullActive: false,
       dialogFullComp: null,
-      showPage: false
+      showPage: false,
+      isOnline: false
     }
   },
 
@@ -109,6 +111,10 @@ export default {
           lng: position.coords.longitude
         }
         this.addMarker(this.center)
+        this.$options.service.updatelocation({Latitude: this.center.lat, Longitude: this.center.lng})
+          .then((data) => {
+            console.log(data)
+          })
       })
     },
     sendMessage: function (message) {

@@ -4,7 +4,8 @@ const defaults = {
   refreshToken: null,
   user: {
     name: '',
-    id: ''
+    id: '',
+    socketid: null
   }
 }
 
