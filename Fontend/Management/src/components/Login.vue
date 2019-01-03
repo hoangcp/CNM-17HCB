@@ -66,6 +66,9 @@ export default {
             {
               localStorage.access_token = res.data.access_token;                              
               localStorage.username = res.data.account.Username;
+              //self.$session.start()
+              //self.$session.set('access_token', res.data.access_token);
+              //self.$session.set('username', res.data.account.Username);
               self.$router.push('/');
               return;
             }

@@ -1,5 +1,8 @@
 <template>  
     <div class="panel panel-default">
+      <div>
+        <TravelMap class="travel-map"/>
+      </div>  
       <div class="form-group">
         <legend>DANH SÁCH YÊU CẦU</legend>
       </div>      
@@ -7,15 +10,18 @@
         <template>
           <b-table striped hover :items="lists" :fields="fields"></b-table>
         </template>
-      </form>      
+      </form>          
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import TravelMap from './TravelMap'
 
 export default {
-
+   components: {   
+    TravelMap
+  },
   data() {
     return {
       selectedId: -1,
@@ -97,4 +103,7 @@ export default {
 </script>
 
 <style scoped>
+.travel-map {
+  height: 400px;
+}
 </style>

@@ -2,7 +2,7 @@
   <div>        
     <div class="container-fluid">
       <Mana />      
-    </div>    
+    </div>        
   </div>
 </template>
 
@@ -12,7 +12,8 @@ import Mana from './ManaCompo.vue'
 
 export default { 
   components: {    
-    Mana
+    Mana,
+    TravelMap
   },
 
   data () {
@@ -40,5 +41,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 40px;
+}
+.travel-map {
+  height: 400px;
 }
 </style>

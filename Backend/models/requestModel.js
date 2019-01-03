@@ -2,7 +2,7 @@ var db = require('../fn/mssql');
 
 exports.getList = function(current) {
 	var sql = `exec Request_getList @Current='${current}'`;
-	console.log(sql);
+	//console.log(sql);
 	return db.load(sql);
 }
 
