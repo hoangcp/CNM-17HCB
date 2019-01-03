@@ -56,4 +56,32 @@ router.post('/login', (req, res) => {
         })
 })
 
+router.post('/updatesocket', (req, res) => {
+    accountModel.add(req.body)
+        .then(value => {
+            console.log(value);
+            res.statusCode = 201;
+            res.json(req.body);
+        })
+        .catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end('View error log on server console');
+        })
+})
+
+router.post('/updatelocation', (req, res) => {
+    accountModel.add(req.body)
+        .then(value => {
+            console.log(value);
+            res.statusCode = 201;
+            res.json(req.body);
+        })
+        .catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end('View error log on server console');
+        })
+})
+
 module.exports = router;
