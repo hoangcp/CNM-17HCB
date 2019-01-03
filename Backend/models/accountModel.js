@@ -13,3 +13,18 @@ exports.login = reqLogin => {
     var sql = `EXEC Account_Login @Username = '${reqLogin.Username}', @Password = '${md5_pwd}'`;
     return db.load(sql);
 }
+
+exports.updatesocket = function(req) {
+    var sql = `update Account set socketid='${req.SocketID}', socketdate=GETDATE() where username='${req.Username}'`;
+    return db.write(sql);
+}
+
+exports.updatelocation = function(req) {
+    var sql = `update Account set Latitude='${req.Latitude}',Longitude='${req.Longitude}', LocationDate=GETDATE() where username='${req.Username}'`;
+    return db.write(sql);
+}
+
+exports.updateisonline = function(req) {
+    var sql = `update Account set isOnline='${req.isOnline}' where username='${req.Username}'`;
+    return db.write(sql);
+}
