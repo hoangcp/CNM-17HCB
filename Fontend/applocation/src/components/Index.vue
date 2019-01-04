@@ -2,11 +2,13 @@
   <div>        
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-2.5 col-md-2.5">
+        <div class="col-sm-2.5 col-md-2.5" style="max-width:400px">
           <Location @SelectedReqID="GetID"/>
         </div>
-        <div class="col-sm-10 col-md-10">
-          <Map :CusInfo="ReqInfo" ref="form"/>
+        <div class="totop">
+          <div class="col-sm-9 col-md-9">
+            <Map :CusInfo="ReqInfo" ref="form"/>
+          </div>
         </div>
       </div>
       
@@ -66,5 +68,12 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 40px;
+}
+
+.totop {
+  position: fixed;
+  z-index: 100;
+  left: 400px;
+  width: 100%;
 }
 </style>

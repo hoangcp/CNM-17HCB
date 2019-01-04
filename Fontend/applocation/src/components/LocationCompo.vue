@@ -54,7 +54,8 @@ export default {
           sortable: true
         }       
       },
-      current: 0,      
+      current: 0,   
+      count: 0,   
     };
   },
 
@@ -86,8 +87,13 @@ export default {
               //console.log(r);
               self.lists.unshift(res.data[r]);
               self.current = res.data[r].CreateDate3;
-              //console.log(self.current);
-            }                       
+              //console.log(self.current);              
+            }                    
+            if (self.count == 0){
+              self.count += 1;
+              self.categoryClicked(self.lists[0]);
+            }   
+            
           })
           .catch(err => {
             console.log(err.response);

@@ -20,8 +20,8 @@ router.post('/', (req, res) => {
 
 router.post('/login', (req, res) => {
     accountModel.login(req.body)
-        .then(rows => {
-            if (rows.recordset.length > 0) {
+        .then(rows => {                        
+            if (rows.recordsets.length > 0) {
                 var account_info = rows.recordset[0];
 
                 var payload = {

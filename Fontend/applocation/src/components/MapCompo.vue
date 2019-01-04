@@ -20,7 +20,7 @@
         @place_changed="addMarker" :value="CusInfo.Address" @changed="addMarker">
       </gmap-autocomplete>  --> 
     </div>
-    <gmap-map
+    <gmap-map ref="mapRef"
       :center="center"
       :zoom="16"
       map-type-id="terrain"
@@ -35,10 +35,11 @@
         @click="center=m.position"  
         @dragend="updatePosition"      
       ></gmap-marker>
+      <!--<gmap-polyline v-bind:path.sync="path" v-bind:options="{ strokeColor:'#008000'}">
+      </gmap-polyline>-->
     </gmap-map>   
   </div>
 </template>
-
 <script>
 import axios from 'axios'
 
@@ -56,11 +57,16 @@ export default {
       places: [],
       currentPlace: null,
       Address: this.$props.CusInfo.Address,   
+      path: [
+        { lat: 10.762658, lng: 106.6649511 }, 
+        { lat: 10.7526639, lng: 106.7314304 }
+      ]
     };
   },  
 
   mounted() {
-    this.geolocate();
+    this.geolocate();   
+    //this.getRoute(); 
   },
 
   update(){
@@ -150,6 +156,33 @@ export default {
               })         
         }
     },  
+
+    /*getRoute: function () {
+      var self = this;
+      var directionsService = new google.maps.DirectionsService();
+      var directionsDisplay = new google.maps.DirectionsRenderer();
+      self.directionsDisplay.setMap(self.$refs.mapRef.$mapObject);
+     
+      function calculateAndDisplayRoute(directionsService, directionsDisplay, start, destination) {
+        directionsService.route({
+          origin: start,
+          destination: destination,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
+      console.log(self.path[0]);
+      console.log(self.path[1]);
+      console.log('hmmm yha');
+      calculateAndDisplayRoute(directionsService, directionsDisplay, self.path[0], self.path[1]);
+
+    }*/
   },
 
   watch: {

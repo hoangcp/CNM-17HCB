@@ -3,12 +3,10 @@ import BootstrapVue from 'bootstrap-vue'
 import App from './App.vue'
 import * as VueGoogleMaps from "vue2-google-maps";
 import router from './router'
-import VueSession from 'vue-session'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.config.productionTip = false
-Vue.use(VueSession, {persist: true});
 Vue.use(BootstrapVue);
 Vue.use(VueGoogleMaps, {
   load: {
@@ -19,7 +17,6 @@ Vue.use(VueGoogleMaps, {
 
 new Vue({
 	router,
-	VueSession,
   render: h => h(App),
 }).$mount('#app')
 

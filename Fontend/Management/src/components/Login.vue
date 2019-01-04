@@ -3,7 +3,7 @@
     <div class="form-group">
       <legend>Đăng nhập</legend>
     </div>  
-    <form>        
+    <form @keyup.enter="login">        
         <div class="form-group">        
           <input type="text" class="form-control" id="txtUsername" placeholder="Tên đăng nhập" v-model="user.username">
         </div>
