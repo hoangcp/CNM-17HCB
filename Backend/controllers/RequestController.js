@@ -47,7 +47,7 @@ router.post('/getlist', (req, res) => {
     var fn = () => {
         requestModel.getList(current)
             .then(rows => {                
-                if (rows.recordset.length > 0) {
+                if (rows.recordsets.length > 0) {
                     res.json(rows.recordset);
                 } else {
                     loop++;      
@@ -77,7 +77,7 @@ router.post('/getID', (req, res) => {
     requestModel.getID(par)
         .then(rows => {
             //console.log(rows);
-            if (rows.recordset.length > 0) {
+            if (rows.recordsets.length > 0) {
                 res.json(rows.recordset);
             } else {
                 res.statusCode = 204;

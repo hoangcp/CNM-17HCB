@@ -12,7 +12,7 @@ Vue.use(BootstrapVue);
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyCEheMxtUig64jFuGOWEjAPhsCFKDpy-OA",
-    libraries: "places,drawing,visualization" // necessary for places input
+    libraries: "places,directions,drawing,visualization" // necessary for places input
   }
 });
 

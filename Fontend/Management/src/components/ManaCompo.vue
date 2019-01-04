@@ -1,14 +1,14 @@
 <template>  
     <div class="panel panel-default">
-      <div>
-        <TravelMap class="travel-map"/>
+      <div style="height:400px;">
+        <Map ref="form" class="travel-map" />
       </div>  
       <div class="form-group">
         <legend>DANH SÁCH YÊU CẦU</legend>
       </div>      
       <form >        
         <template>
-          <b-table striped hover :items="lists" :fields="fields"></b-table>
+          <b-table striped hover :items="lists" :fields="fields" @row-clicked="myRowClickHandler"></b-table>
         </template>
       </form>          
     </div>
@@ -16,12 +16,13 @@
 
 <script>
 import axios from 'axios'
-import TravelMap from './TravelMap'
+import Map from './MapCompo.vue'
 
 export default {
    components: {   
-    TravelMap
+    Map
   },
+
   data() {
     return {
       selectedId: -1,
@@ -58,9 +59,14 @@ export default {
         UpdateBy:{
           label: 'Người cập nhật',
           sortable: true
-        }       
+        },
+        Assign:{
+          label: 'Tài xế',
+          sortable: true
+        }         
       },
       current: 0,      
+      count: 0
     };
   },
 
@@ -68,7 +74,13 @@ export default {
      this.getList();                         
   },
 
-  methods: {        
+  methods: {       
+    myRowClickHandler(record, index) {     
+      var self = this;
+      console.log(index); 
+      self.$refs.form.addMarkerFromParent(record);  
+    },
+ 
     getList(){
       var self = this;           
       axios.post('http://localhost:6300/request/getlist',
@@ -87,7 +99,13 @@ export default {
               self.lists.unshift(res.data[r]);
               self.current = res.data[r].CreateDate3;
               //console.log(self.current);
-            }                       
+            }      
+
+            if(self.count == 0)
+            {
+              self.count += 1;
+              self.myRowClickHandler(self.lists[0], 0);
+            }                 
           })
           .catch(err => {
             console.log(err.response);            
@@ -105,5 +123,9 @@ export default {
 <style scoped>
 .travel-map {
   height: 400px;
+  position: fixed;
+  z-index: 100;  
+  width: 100%;  
+  top: 0px;
 }
 </style>
