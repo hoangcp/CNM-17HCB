@@ -48,7 +48,7 @@ server = app.listen(port, () => {
     console.log(`api running on port ${port}`);
 })
 
-const io = require('socket.io')(server);
+io = require('socket.io')(server);
 io.on('connection',(socket)=>{
     console.log('New user');
     socket.username = 'Anonymous'

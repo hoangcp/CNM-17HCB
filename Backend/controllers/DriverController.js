@@ -9,13 +9,13 @@ router.post('/updatesocket', (req, res) => {
         .then(value => {
             res.statusCode = 200
             var result = {
-                status: 0,
+                error: 1,
                 message: 'Cập nhật socket không thành công'
             }
             if (value.rowsAffected > 0)
             {
                 result = {
-                    status: 1,
+                    error: 0,
                     message: 'Cập nhật socket thành công'
                 }
             }
@@ -33,13 +33,13 @@ router.post('/updatelocation', (req, res) => {
         .then(value => {
             res.statusCode = 200
             var result = {
-                status: 0,
+                error: 1,
                 message: 'Cập nhật toạ độ không thành công'
             }
             if (value.rowsAffected > 0)
             {
                 result = {
-                    status: 1,
+                    error: 0,
                     message: 'Cập nhật toạ độ thành công'
                 }
             }
@@ -57,13 +57,13 @@ router.post('/updateisonline', (req, res) => {
         .then(value => {
             res.statusCode = 200
             var result = {
-                status: 0,
+                error: 1,
                 message: 'Cập nhật tình trạng online thành công'
             }
             if (value.rowsAffected > 0)
             {
                 result = {
-                    status: 1,
+                    error: 0,
                     message: 'Cập nhật tình trạng online thành công'
                 }
             }

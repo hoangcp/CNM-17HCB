@@ -20,6 +20,7 @@ router.post('/', (req, res) => {
 
             requestModel.insert(par)
                 .then(value => {
+                    io.in('hoangcp').emit('TT_Khach_Hang', par);
                     //console.log(value);
                     res.statusCode = 201;
                     res.json({
@@ -106,6 +107,38 @@ router.post('/updatelatlng', (req, res) => {
             res.json({
                 msg: 'Cập nhật vị trí thành công'
             })
+        })
+        .catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end('View error log on server console');
+        })  
+})
+
+router.post('/updateassign', (req, res) => {
+    var par = {        
+        Assign: req.body.Assign,
+        Status: req.body.Status,
+        Username: req.body.Username,
+        RequestID:  req.body.RequestID
+    }
+
+    requestModel.updateLatLng(par)
+        .then(value => {
+            //console.log(value);
+            res.statusCode = 200;
+            var result = {
+                error: 1,
+                message: 'Nhận thông tin không thành công'
+            }
+            if (value.rowsAffected > 0)
+            {
+                result = {
+                    error: 0,
+                    message: 'Nhận thông tin thành công'
+                }
+            }
+            res.json(result)
         })
         .catch(err => {
             console.log(err);
