@@ -15,12 +15,6 @@
       v-flex.text-xs-center(xs12 lg6)
         v-layout(row wrap)
           v-flex(xs12)
-            .my-login__subheading.subheading
-              | Bike
-          v-flex(xs12)
-            .my-login__subheading.subheading
-              | Đặt xe trực tuyến
-          v-flex(xs12)
             v-card.my-login__card
               v-card-title.my-login__card-title(primary-title)
                 v-avatar(:size="100")
@@ -35,7 +29,6 @@
                   )
                   v-text-field(
                     label='Password'
-                    hint='có ít nhất 6 ký tự'
                     v-model='credentials.password'
                     min='6'
                     :append-icon="passwordHidden ? 'visibility' : 'visibility_off'"
@@ -80,7 +73,7 @@ export default {
         username: this.credentials.username,
         password: this.credentials.password
       }
-      auth.login(credentials, 'dashboard').then((rep) => {
+      auth.login(credentials, 'gps').then((rep) => {
         this.loading = false
         if (!rep.data.auth) {
           alert(rep.data.message)

@@ -19,9 +19,7 @@ const defaults = {
     Longitude: '',
     Status: 0,
     Assign: '',
-    isStart: false,
-    isEnd: false,
-    driverName: 'Bắt đầu'
+    isStart: false
   }
 }
 

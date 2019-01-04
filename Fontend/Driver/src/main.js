@@ -10,6 +10,7 @@ import Loading from './components/loading'
 import Appbar from './components/app-bar'
 import Appfooter from './components/app-footer'
 import * as VueGoogleMaps from 'vue2-google-maps'
+export const bus = new Vue()
 /* import BootstrapVue from 'bootstrap-vue'
 
 import 'bootstrap/dist/css/bootstrap.css'

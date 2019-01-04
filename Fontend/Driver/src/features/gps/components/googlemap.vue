@@ -14,10 +14,11 @@
               v-flex(d-flex)
                 v-card(flat)
                   v-card-title
-                    v-btn(flat @click.native="addMarker()") Xác định vị trí
+                    v-btn(flat @click.native="addMarker(center)") Xác định vị trí
                     v-btn(flat @click.native="online()" v-show="isOnline") Online
                     v-btn(flat @click.native="online()" v-show="!isOnline") Offline
-                    v-btn(flat @click.native="updatestatus(2)" v-show="isStart") {{driverName}}
+                    v-btn(flat @click.native="updatestatus(4)" v-show="isStart") Bắt đầu
+                    v-btn(flat @click.native="updatestatus(5)" v-show="isEnd") Kết thúc
               v-flex(d-flex)
                 v-card
                   v-card-text
@@ -34,7 +35,7 @@
                             :position="m.position"
                             :draggable= "true"
                             :clickable= "true"
-                            @click="openDialogFull()"
+                            @click="updatelocation()"
                           )
 
         v-dialog(
@@ -52,7 +53,7 @@ import ViewInfo from './viewinfo'
 import * as constants from '@/constants'
 import Service from '../service'
 import store from '@/store'
-
+import { bus } from '../../../main'
 const io = require('socket.io-client')
 const ioClient = io.connect(constants.API_URL)
 
@@ -70,8 +71,9 @@ export default {
       dialogFullComp: null,
       showPage: false,
       isOnline: false,
-      isStart: store.state.auth.requestInfo.isStart,
-      driverName: store.state.auth.requestInfo.driverName
+      isStart: false,
+      isEnd: false,
+      driverName: 'Bắt đầu'
     }
   },
 
@@ -89,12 +91,15 @@ export default {
       }
       // console.info(this.requestInfo)
     })
+
+    bus.$on('Start', (value) => {
+      this.isStart = true
+    })
   },
   methods: {
     // receives a place object via the autocomplete component
     setPlace (place) {
-      console.log(place)
-      this.currentPlace = place
+      this.addMarker(this.center)
     },
     addMarker (location) {
       if (this.currentPlace || location) {
@@ -117,7 +122,7 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
-        this.addMarker(this.center)
+        // this.addMarker(this.center)
         this.$options.service.updatelocation({Latitude: this.center.lat, Longitude: this.center.lng})
           .then((data) => {
             console.log(data)
@@ -151,6 +156,41 @@ export default {
             }
           }
         })
+    },
+    updatestatus: function (status) {
+      var Assign = store.state.auth.user.name
+      var requestInfo = store.state.auth.requestInfo
+      var data = {
+        Assign: Assign,
+        Status: status,
+        RequestID: requestInfo.ID
+      }
+      this.$options.service.updateassign(data)
+        .then((data) => {
+          if (data.status === 200) {
+            if (data.data.error === 0) {
+              requestInfo.Status = data.Status
+              if (this.isStart) {
+                this.isStart = false
+                this.isEnd = true
+              } else {
+                this.isEnd = false
+              }
+            } else {
+              alert(data.data.message)
+            }
+          }
+        })
+    },
+    updatelocation () {
+      var r = confirm('Bạn có muốn cập nhật toạ độ không')
+      if (r) {
+        this.$options.service.updatelocation({Latitude: this.center.lat, Longitude: this.center.lng})
+          .then((data) => {
+            alert(data.data.message)
+            this.markers = []
+          })
+      }
     }
   }
 }

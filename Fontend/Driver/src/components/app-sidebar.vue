@@ -31,52 +31,11 @@
           v-list-tile-content
             v-list-tile-title Cài đặt
 
-    v-divider
-    v-list(dark)
-      v-list-tile(ripple :to="{ name: 'tutorial' }")
-        v-list-tile-action
-          v-icon library_books
-        v-list-tile-content
-          v-list-tile-title Nhận thông tin
-
-      v-list-tile(ripple :to="{ name: 'dashboard' }")
-        v-list-tile-action
-          v-icon dashboard
-        v-list-tile-content
-          v-list-tile-title Màn hình chính
-
       v-list-tile(ripple :to="{ name: 'gps' }")
         v-list-tile-action
           v-icon build
         v-list-tile-content
           v-list-tile-title Toạ độ
-
-      v-list-group(peprend-icon='assessment')
-        v-list-tile(slot="activator" ripple)
-          v-list-tile-content
-            v-list-tile-title Reports
-        v-list-tile(ripple :to="{ name: 'laborReport' }")
-          v-list-tile-content
-            v-list-tile-title Labor Report
-        v-list-tile(ripple :to="{ name: 'earningsReport' }")
-          v-list-tile-content
-            v-list-tile-title Earnings
-
-      v-list-group(prepend-icon='web')
-        v-list-tile(slot="activator" ripple)
-          v-list-tile-content
-            v-list-tile-title Examples
-        v-list-tile(ripple :to="{ name: 'wip' }")
-          v-list-tile-content
-            v-list-tile-title Work-in-progress
-
-      v-list-group(prepend-icon='more_horiz')
-        v-list-tile(slot="activator" ripple)
-          v-list-tile-content
-            v-list-tile-title More
-        v-list-tile(ripple :to="{ name: 'importMyData' }")
-          v-list-tile-content
-            v-list-tile-title More Here
 
       v-list-tile(@click="logout()" ripple)
         v-list-tile-action

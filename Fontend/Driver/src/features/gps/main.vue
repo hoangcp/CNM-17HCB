@@ -11,6 +11,7 @@ import googlemap from './components/googlemap'
 import Vue from 'vue'
 import VueSocketIO from 'vue-socket.io'
 import * as constants from '@/constants'
+export const bus = new Vue()
 
 Vue.use(new VueSocketIO({
   debug: true,

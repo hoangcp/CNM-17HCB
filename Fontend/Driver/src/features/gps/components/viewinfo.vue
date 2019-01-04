@@ -54,6 +54,7 @@
 <script>
 import store from '@/store'
 import Service from '../service'
+import { bus } from '../../../main'
 
 export default {
   name: 'Profile',
@@ -134,12 +135,15 @@ export default {
             if (data.data.error === 0) {
               this.requestInfo.Status = data.Status
               this.requestInfo.Assign = data.Assign
+              bus.$emit('Start', true)
               this.isActive = false
-              store.state.auth.requestInfo.isStart = true
-              console.log(store.state.auth.requestInfo)
+              this.totalTime = 10
+              this.stopTimer()
             } else {
               this.requestInfo.Status = 0
               this.requestInfo.Assign = ''
+              this.isActive = false
+              this.totalTime = 10
               alert(data.data.message)
             }
           }
@@ -172,6 +176,7 @@ export default {
         this.totalTime--
       } else {
         this.totalTime = 10
+        this.stopTimer()
         this.save(0)
       }
     },
