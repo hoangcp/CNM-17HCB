@@ -19,13 +19,42 @@ router.post('/', (req, res) => {
             }  
 
             requestModel.insert(par)
-                .then(value => {
-                    io.in('hoangcp').emit('TT_Khach_Hang', par);
-                    //console.log(value);
+                .then(rows => {     
                     res.statusCode = 201;
-                    res.json({
-                        msg: 'Yêu cầu đã được thêm vào danh sách'
-                    })
+                    var result =  {
+                        msg: 'Yêu cầu không thực hiện được',
+                        data: {}
+                    }        
+                    if (rows.recordset.length > 0) {
+                        var data = rows.recordset[0]
+                        result =  {
+                            msg: 'Yêu cầu đã được thêm vào danh sách',
+                            data: data
+                        }
+                        // assign
+                        var parassgin = {
+                            id: result.data.ID
+                        }
+                        requestModel.assign(parassgin)
+                            .then(value => {
+                                if (value.recordset.length > 0) {
+                                    var reqinfo = value.recordset[0]
+                                    result.data = reqinfo
+                                    io.emit('TT_Khach_Hang', reqinfo)
+                                } else {
+                                    res.statusCode = 204;
+                                    res.end('NO DATA');
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.statusCode = 500;
+                                res.end('View error log on server console');
+                            })
+                    }
+                    
+                    //console.log(result)
+                    res.json(result)
                 })
                 .catch(err => {
                     console.log(err);
@@ -122,7 +151,7 @@ router.post('/updateassign', (req, res) => {
         Username: req.body.Username,
         RequestID:  req.body.RequestID
     }
-
+    console.log(req.body)
     requestModel.updateassign(par)
         .then(value => {
             //console.log(value);

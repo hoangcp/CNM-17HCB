@@ -4,6 +4,7 @@ import * as constants from '@/constants'
 import auth from '../../auth/helpers'
 
 const LOGIN_DRIVER = constants.API_URL + '/driver/'
+const LOGIN_REQ = constants.API_URL + '/request/'
 export default class Service {
   constructor (options) {
     this.id = store.state.auth.user.id
@@ -93,6 +94,42 @@ export default class Service {
       data: {
         Username: authinfo.user.name,
         isOnline: creds.isOnline
+      }
+    })
+      .then((response) => {
+        return response
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          auth.logout()
+        }
+        let errorMessage = null
+        if (error.response) errorMessage = error.response.status
+        else if (error.request) errorMessage = 'no response from server'
+        else errorMessage = error.message
+
+        return errorMessage
+      })
+  }
+
+  updateassign (creds, callback) {
+    const authinfo = store.state.auth
+    console.log({
+      'access-token': authinfo.accessToken,
+      'Content-Type': 'application/json'
+    })
+    return Vue.http({
+      method: 'POST',
+      url: LOGIN_REQ + 'updateassign',
+      headers: {
+        'access-token': authinfo.accessToken,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        Username: authinfo.user.name,
+        Assign: creds.Assign,
+        Status: creds.Status,
+        RequestID: creds.RequestID
       }
     })
       .then((response) => {

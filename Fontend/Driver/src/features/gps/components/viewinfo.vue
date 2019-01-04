@@ -1,12 +1,12 @@
 <template lang="pug">
   v-card.my-profile-address(tile)
     v-toolbar(card dark color="primary")
-      v-btn(icon @click.native="isActive = false" dark)
+      v-btn(icon @click.native="save(0)" dark)
         v-icon close
       v-toolbar-title Thông tin khách hàng
       v-spacer
       v-toolbar-items
-        v-btn(dark flat @click.native="save()") Nhận
+        v-btn(dark flat @click.native="save(2)") Nhận ({{totalTime}}s)
       v-menu(bottom right offset-y)
         v-btn(slot="activator" dark icon)
           v-icon more_vert
@@ -53,6 +53,8 @@
 
 <script>
 import store from '@/store'
+import Service from '../service'
+
 export default {
   name: 'Profile',
   props: {
@@ -61,7 +63,7 @@ export default {
       default: false
     }
   },
-
+  service: new Service(),
   data () {
     return {
       loading: false,
@@ -69,7 +71,8 @@ export default {
       oops: false,
       valid: false,
       countries: null,
-
+      timer: null,
+      totalTime: 10,
       requestInfo: {
         RequestID: 0,
         Fullname: '',
@@ -79,7 +82,9 @@ export default {
         Username: '',
         formattedAddress: '',
         Latitude: '',
-        Longitude: ''
+        Longitude: '',
+        Status: 0,
+        Assign: ''
       } /* ,
 
       rules: {
@@ -112,11 +117,33 @@ export default {
     this.refreshData()
   },
   created () {
+    this.startTimer()
   },
   methods: {
-    save () {
-      this.isActive = true
-      this.requestInfo.Status = 1
+    save (status) {
+      console.log(this.requestInfo)
+      var Assign = store.state.auth.user.name
+      var data = {
+        Assign: Assign,
+        Status: status,
+        RequestID: this.requestInfo.ID
+      }
+      this.$options.service.updateassign(data)
+        .then((data) => {
+          if (data.status === 200) {
+            if (data.data.error === 0) {
+              this.requestInfo.Status = data.Status
+              this.requestInfo.Assign = data.Assign
+              this.isActive = false
+              store.state.auth.requestInfo.isStart = true
+              console.log(store.state.auth.requestInfo)
+            } else {
+              this.requestInfo.Status = 0
+              this.requestInfo.Assign = ''
+              alert(data.data.message)
+            }
+          }
+        })
     },
 
     refreshData () {
@@ -136,6 +163,20 @@ export default {
           this.oops = true
           this.loading = false
         }) */
+    },
+    startTimer: function () {
+      this.timer = setInterval(() => this.countdown(), 1000)
+    },
+    countdown: function () {
+      if (this.totalTime >= 1) {
+        this.totalTime--
+      } else {
+        this.totalTime = 10
+        this.save(0)
+      }
+    },
+    stopTimer: function () {
+      clearInterval(this.timer)
     }
   }
 }

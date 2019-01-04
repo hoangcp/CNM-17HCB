@@ -6,6 +6,22 @@ const defaults = {
     name: '',
     id: '',
     socketid: null
+  },
+  requestInfo: {
+    ID: 0,
+    Fullname: '',
+    PhoneNumber: '',
+    Address: '',
+    Note: '',
+    Username: '',
+    formattedAddress: '',
+    Latitude: '',
+    Longitude: '',
+    Status: 0,
+    Assign: '',
+    isStart: false,
+    isEnd: false,
+    driverName: 'Bắt đầu'
   }
 }
 

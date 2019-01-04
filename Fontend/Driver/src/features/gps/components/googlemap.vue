@@ -17,8 +17,7 @@
                     v-btn(flat @click.native="addMarker()") Xác định vị trí
                     v-btn(flat @click.native="online()" v-show="isOnline") Online
                     v-btn(flat @click.native="online()" v-show="!isOnline") Offline
-                    v-btn(flat @click.native="updatestatus(2)" v-show="isStart") Bắt đầu
-                    v-btn(flat @click.native="updatestatus(3)" v-show="isEnd") Kết thúc
+                    v-btn(flat @click.native="updatestatus(2)" v-show="isStart") {{driverName}}
               v-flex(d-flex)
                 v-card
                   v-card-text
@@ -35,7 +34,7 @@
                             :position="m.position"
                             :draggable= "true"
                             :clickable= "true"
-                            @click="openDialogFull('AddressEdit')"
+                            @click="openDialogFull()"
                           )
 
         v-dialog(
@@ -49,7 +48,7 @@
 </template>
 
 <script>
-import AddressEdit from './viewinfo'
+import ViewInfo from './viewinfo'
 import * as constants from '@/constants'
 import Service from '../service'
 import store from '@/store'
@@ -71,8 +70,8 @@ export default {
       dialogFullComp: null,
       showPage: false,
       isOnline: false,
-      isStart: false,
-      isEnd: false
+      isStart: store.state.auth.requestInfo.isStart,
+      driverName: store.state.auth.requestInfo.driverName
     }
   },
 
@@ -84,8 +83,10 @@ export default {
     this.$socket.emit('change_username', { username: store.state.auth.user.name })
     // console.log(this.$socket)
     ioClient.on('TT_Khach_Hang', (reqInfo) => {
-      store.state.auth.requestInfo = reqInfo
-      this.openDialogFull('AddressEdit')
+      if (reqInfo.Assign === store.state.auth.user.name) {
+        store.state.auth.requestInfo = reqInfo
+        this.openDialogFull()
+      }
       // console.info(this.requestInfo)
     })
   },
@@ -130,8 +131,8 @@ export default {
       this.$socket.emit('change_username', { username: store.state.auth.user.name })
       console.log(this.$socket)
     },
-    openDialogFull (comp) {
-      if (comp === 'AddressEdit') this.dialogFullComp = AddressEdit
+    openDialogFull () {
+      this.dialogFullComp = ViewInfo
       this.dialogFullActive = true
     },
     online: function () {
