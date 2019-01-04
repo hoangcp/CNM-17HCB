@@ -115,7 +115,7 @@ router.post('/updatelatlng', (req, res) => {
         })  
 })
 
-router.post('/updateLatLng', (req, res) => {
+router.post('/updateassign', (req, res) => {
     var par = {        
         Assign: req.body.Assign,
         Status: req.body.Status,
@@ -123,7 +123,7 @@ router.post('/updateLatLng', (req, res) => {
         RequestID:  req.body.RequestID
     }
 
-    requestModel.updateLatLng(par)
+    requestModel.updateassign(par)
         .then(value => {
             //console.log(value);
             res.statusCode = 200;
