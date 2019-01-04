@@ -16,7 +16,7 @@ exports.getID = function(par) {
 exports.insert = function(par) {
 	// var sql = `INSERT INTO Request(Fullname, PhoneNumber, Address, Note, CreateBy, CreateDate, Status, Latitude, Longitude, formattedAddress) 
 				// VALUES(N'${par.Fullname}','${par.PhoneNumber}', N'${par.Address}', N'${par.Note}', N'${par.Username}', GETDATE(), 0, '${par.Latitude}', '${par.Longitude}', N'${par.formattedAddress}')`;
-	var sql = `exec	InsertRequest @FullName='${par.Fullname}', @PhoneNumber ='${par.PhoneNumber}',@Address ='${par.Address}',@Status='0',@UserName ='${par.Username}',@Latitude ='${par.Latitude}',@Longitude ='${par.Longitude}', @formattedAddress = '${par.formattedAddress}',@Assign=NULL`
+	var sql = `exec	InsertRequest @FullName=N'${par.Fullname}', @PhoneNumber ='${par.PhoneNumber}',@Address =N'${par.Address}',@Status='0',@UserName =N'${par.Username}',@Latitude ='${par.Latitude}',@Longitude ='${par.Longitude}', @formattedAddress = N'${par.formattedAddress}',@Assign=NULL`
 	return db.write(sql);
 }
 
