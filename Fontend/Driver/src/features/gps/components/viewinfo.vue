@@ -110,14 +110,16 @@ export default {
 
   watch: {
     active (val) {
-      // if (val) this.refreshData()
+      if (val) this.refreshData()
     }
   },
 
   mounted () {
     this.refreshData()
+    // this.startTimer()
   },
   created () {
+    this.refreshData()
     this.startTimer()
   },
   methods: {

@@ -94,6 +94,12 @@ export default {
 
     bus.$on('Start', (value) => {
       this.isStart = true
+      console.log(store.state.auth.requestInfo)
+      var location = {
+        lat: parseFloat(store.state.auth.requestInfo.Latitude),
+        lng: parseFloat(store.state.auth.requestInfo.Longitude)
+      }
+      this.addMarker(location)
     })
   },
   methods: {
@@ -175,6 +181,8 @@ export default {
                 this.isEnd = true
               } else {
                 this.isEnd = false
+                this.markers = []
+                location.reload()
               }
             } else {
               alert(data.data.message)
