@@ -25,7 +25,7 @@ Phân tích thiết kế db:
 	+ Dia chi
 	+ Ghi chu
 	+ Thoi gian gui
-	+ Tinh trang: Chờ tiếp nhận, Đã tiếp nhận, Đang tìm xe, Xe đang đến, Không có xe, Hủy, Đã lên xe
+	+ Tinh trang: Chờ tiếp nhận, Đang tìm xe, Đã tiếp nhận, Xe đang đến, Đã lên xe, Hoàn thành, Hủy
 	+ Dia chi sau khi cap nhat
 - Car:
 	+ Ho ten chu xe
