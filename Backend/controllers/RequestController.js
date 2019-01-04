@@ -115,7 +115,7 @@ router.post('/updatelatlng', (req, res) => {
         })  
 })
 
-router.post('/updateassign', (req, res) => {
+router.post('/updateLatLng', (req, res) => {
     var par = {        
         Assign: req.body.Assign,
         Status: req.body.Status,
