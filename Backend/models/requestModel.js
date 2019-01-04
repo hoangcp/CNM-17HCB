@@ -24,3 +24,7 @@ exports.updateLatLng = function(par) {
 	return db.write(sql);
 }
 
+exports.updateassign = function(par) {
+	var sql = `UPDATE Request SET Assign='${par.Assign}', Status='${par.Status}', Updatedate=GETDATE(), UpdateBy='${par.Username}' WHERE id=${par.RequestID}`;
+	return db.write(sql);
+}

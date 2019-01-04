@@ -3,10 +3,10 @@
     v-toolbar(card dark color="primary")
       v-btn(icon @click.native="isActive = false" dark)
         v-icon close
-      v-toolbar-title Address
+      v-toolbar-title Thông tin khách hàng
       v-spacer
       v-toolbar-items
-        v-btn(dark flat @click.native="save()") Save
+        v-btn(dark flat @click.native="save()") Nhận
       v-menu(bottom right offset-y)
         v-btn(slot="activator" dark icon)
           v-icon more_vert
@@ -15,30 +15,46 @@
     v-card-text(style="position: relative; max-width: 500px; margin: auto;")
       loading(:loading="loading" :oops="oops")
 
-      v-form(v-model="valid")
-        // v-text-field(label="Name" v-model="name" :rules="nameRules" :counter="10" required="")
-        // v-text-field(label="E-mail" v-model="email" :rules="emailRules" required="")
-        v-text-field(label="Address Line 1" v-model="address.addressLine1" :rules="rules.addressLine1" required="")
-        v-text-field(label="Address Line 2" v-model="address.addressLine2")
-        v-text-field(label="City" v-model="address.city")
-        v-text-field(label="State/Region" v-model="address.state" :rules="rules.state" required="")
-        v-select(
-          label="Country"
-          v-bind:items="countries"
-          v-model="address.country"
-          required
-          item-value="name"
-          item-text="name"
-          :rules="rules.country"
-        )
-        v-text-field(label="Zipcode" v-model="address.zipcode" :rules="rules.zipcode" required="")
+      v-flex(d-flex xs12)
+        v-layout(column)
+          v-flex(d-flex)
+            v-card
+              v-card-text
+                v-layout
+                  v-flex
+                    img.app-avatar(src="../../../assets/images/profile.jpg")
+                  v-flex.px-2
+                    h2 {{ requestInfo.Fullname }}
+          v-flex(d-flex)
+            v-card(flat)
+              v-card-title
+                .title Thông tin chi tiết
+              v-card-text
+                v-layout(row wrap style="align-items: center;")
+                  v-flex(d-flex xs12 sm12 md6)
+                    | Địa chỉ
+                  v-flex(dflex xs12 sm12 md6)
+                    v-layout(style="align-items: center;")
+                      v-flex.text-xs-left(md6) {{ requestInfo.Address }}
+                  v-flex(d-flex xs12 sm12 md6)
+                    | Số điện thoại
+                  v-flex(dflex xs12 sm12 md6)
+                    v-layout(style="align-items: center;")
+                      v-flex.text-xs-left(md6) {{ requestInfo.PhoneNumber }}
+              v-card-text
+                v-layout(row wrap style="align-items: center;")
+                  v-flex(d-flex xs12 sm12 md6)
+                    | Ghi chú
+                  v-flex(dflex xs12 sm12 md6)
+                    v-layout(style="align-items: center;")
+                      v-flex.text-xs-left(md6) {{ requestInfo.Note }}
 
 </template>
 
 <script>
-
+import store from '@/store'
 export default {
-  name: 'ProfileAddress',
+  name: 'Profile',
   props: {
     active: {
       type: Boolean,
@@ -54,21 +70,24 @@ export default {
       valid: false,
       countries: null,
 
-      address: {
-        addressLine1: '',
-        addressLine2: '',
-        city: '',
-        state: '',
-        country: null,
-        zipcode: ''
-      },
+      requestInfo: {
+        RequestID: 0,
+        Fullname: '',
+        PhoneNumber: '',
+        Address: '',
+        Note: '',
+        Username: '',
+        formattedAddress: '',
+        Latitude: '',
+        Longitude: ''
+      } /* ,
 
       rules: {
         addressLine1: [(v) => !!v || 'Address Line 1 is required'],
         state: [(v) => !!v || 'State/Region is required'],
         country: [(v) => !!v || 'Country is required'],
         zipcode: [(v) => !!v || 'Zipcode is required']
-      }
+      } */
     }
   },
 
@@ -85,23 +104,26 @@ export default {
 
   watch: {
     active (val) {
-      if (val) this.refreshData()
+      // if (val) this.refreshData()
     }
   },
 
   mounted () {
     this.refreshData()
   },
-
+  created () {
+  },
   methods: {
     save () {
-      this.isActive = false
+      this.isActive = true
+      this.requestInfo.Status = 1
     },
 
     refreshData () {
       // this.loading = true
-      this.oops = true
+      this.oops = false
       this.showPage = true
+      this.requestInfo = store.state.auth.requestInfo
       this.loading = false
       /* this.$options.service.getProfile()
         .then((data) => {

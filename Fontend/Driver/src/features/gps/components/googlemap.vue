@@ -15,9 +15,10 @@
                 v-card(flat)
                   v-card-title
                     v-btn(flat @click.native="addMarker()") Xác định vị trí
-                    v-btn(flat @click.native="offline()" v-show="isOnline") Online
+                    v-btn(flat @click.native="online()" v-show="isOnline") Online
                     v-btn(flat @click.native="online()" v-show="!isOnline") Offline
-                    v-btn(flat @click.native="sendMessage()") sendMessage
+                    v-btn(flat @click.native="updatestatus(2)" v-show="isStart") Bắt đầu
+                    v-btn(flat @click.native="updatestatus(3)" v-show="isEnd") Kết thúc
               v-flex(d-flex)
                 v-card
                   v-card-text
@@ -51,7 +52,7 @@
 import AddressEdit from './viewinfo'
 import * as constants from '@/constants'
 import Service from '../service'
-// import store from '@/store'
+import store from '@/store'
 
 const io = require('socket.io-client')
 const ioClient = io.connect(constants.API_URL)
@@ -69,7 +70,9 @@ export default {
       dialogFullActive: false,
       dialogFullComp: null,
       showPage: false,
-      isOnline: false
+      isOnline: false,
+      isStart: false,
+      isEnd: false
     }
   },
 
@@ -78,9 +81,12 @@ export default {
     this.showPage = true
   },
   created () {
-    ioClient.on('EVENT_NAME', (msg) => {
+    this.$socket.emit('change_username', { username: store.state.auth.user.name })
+    // console.log(this.$socket)
+    ioClient.on('TT_Khach_Hang', (reqInfo) => {
+      store.state.auth.requestInfo = reqInfo
       this.openDialogFull('AddressEdit')
-      console.info(msg)
+      // console.info(this.requestInfo)
     })
   },
   methods: {
@@ -121,12 +127,29 @@ export default {
       this.$socket.emit('new_message', { message: 'khong biet noi gi' })
     },
     changeUser: function (val) {
-      this.$socket.emit('change_username', { username: 'giautq' })
+      this.$socket.emit('change_username', { username: store.state.auth.user.name })
+      console.log(this.$socket)
     },
     openDialogFull (comp) {
       if (comp === 'AddressEdit') this.dialogFullComp = AddressEdit
-
       this.dialogFullActive = true
+    },
+    online: function () {
+      console.log(store.state.auth.requestInfo)
+      var value = 0
+      if (this.isOnline) {
+        value = 1
+      }
+      this.$options.service.updateisonline({isOnline: value})
+        .then((data) => {
+          if (data.status === 200) {
+            if (data.data.error === 0) {
+              this.isOnline = !this.isOnline
+            } else {
+              alert(data.data.message)
+            }
+          }
+        })
     }
   }
 }
